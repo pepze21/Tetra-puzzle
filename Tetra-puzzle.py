@@ -1,10 +1,11 @@
-### Tetra Puzzle ver.210727.01 rough draft
+### Tetra Puzzle ver.210727.02 rough draft, add T1~4 cases
 
 import copy # to use deepcopy()
 
 ## Variables
 SIZE = 9
 frame = []
+
 
 ## Class & Functions
 class Node() :
@@ -20,6 +21,10 @@ class Node() :
         self.L1 = None
         self.L2 = None
         self.L3 = None
+        self.T1 = None
+        self.T2 = None
+        self.T3 = None
+        self.T4 = None
         self.I1 = None
         self.I2 = None
         self.O = None
@@ -28,6 +33,7 @@ class Node() :
         self.cnt_Z = None
         self.cnt_J = None
         self.cnt_L = None
+        self.cnt_T = None
         self.cnt_I = None
         self.cnt_O = None
 
@@ -61,6 +67,18 @@ def can_L2(i, j) :
 def can_L3(i, j) :
     return (frame[i][j] + frame[i+1][j] + frame[i+1][j-1] + frame[i+1][j-2] == 0)
 
+def can_T1(i, j) :
+    return (frame[i][j] + frame[i][j+1] + frame[i][j+2] + frame[i+1][j+1] == 0)
+
+def can_T2(i, j) :
+    return (frame[i][j] + frame[i+1][j] + frame[i+2][j] + frame[i+1][j+1] == 0)
+
+def can_T3(i, j) :
+    return (frame[i][j] + frame[i+1][j] + frame[i+2][j] + frame[i+1][j-1] == 0)
+
+def can_T4(i, j) :
+    return (frame[i][j] + frame[i+1][j] + frame[i+1][j+1] + frame[i+1][j-1] == 0)
+
 def can_I1(i, j) :
     return (frame[i][j] + frame[i][j+1] + frame[i][j+2] + frame[i][j+3] == 0)
 
@@ -70,8 +88,22 @@ def can_I2(i, j) :
 def can_O(i, j) :
     return (frame[i][j] + frame[i][j+1] + frame[i+1][j+1] + frame[i+1][j] == 0)
 
-def do_S :
 
+root = Node()
+current = root
+
+def do_S(i,j,frame):
+    global current
+    current.S = copy.deepcopy(current)
+    current.data.append([i,j,'S'])
+    current.cnt_S += 1
+    current.frame = copy.deepcopy(frame)
+    current.frame[i][j] = 1
+    current.frame[i+1][j] = 1
+    current.frame[i+1][j+1] = 1
+    current.frame[i+2][i+1] = 1
+
+'''
 def do_Z1 :
 def do_Z2 :
 def do_J1 :
@@ -83,7 +115,7 @@ def do_L3 :
 def do_I1 :
 def do_I2 :
 def do_O :
-
+'''
 
 
 
@@ -100,6 +132,7 @@ def isComplete(frame) :
 def find_Cases(puzzle_frame):
     global SIZE
     for i, j in range(3, SIZE + 3):
+        pass
 
 # sample frame(for test)
 def loadFrame() :
