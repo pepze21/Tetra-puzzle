@@ -1,4 +1,4 @@
-### Tetra Puzzle ver.210731.05, add 3 missing cases
+### Tetra Puzzle ver.1.06-210801, almost done, but error occurs
 
 import copy
 
@@ -9,10 +9,10 @@ history = []
 solutions = []
 
 ## Functions
-def findNext(frame):
-    for i in range(3, SIZE + 3):
-        for j in range(3, SIZE + 3):
-            if (frame[i][j] == 0):
+def findNext(frame) :
+    for i in range(3, SIZE + 3) :
+        for j in range(3, SIZE + 3) :
+            if (frame[i][j] == 0) :
                 return i, j
 
 # typeNo : 0:S1 /  1:S2 /  2:Z1 /  3:Z2 /  4:J1 /  5:J2 /  6:J3 /
@@ -177,24 +177,24 @@ def blockSwitch(typeNo, i, j, frame) :
         print("error : unknown typeNo")
 
 def isComplete(frame) :
-    for i in range(3, SIZE + 3):
-        for j in range(3, SIZE +3):
+    for i in range(3, SIZE + 3) :
+        for j in range(3, SIZE +3) :
             if (frame[i][j] == 0) :
                 return False
     return True
 
 def cnt_ClassifiedBlockType(history) :
-    cnt = [0 for _ in range(16)]
+    cnt = [0 for _ in range(19)]
     for blockData in history :
         cnt[blockData[0]] += 1
     cnt_classified = [0 for _ in range(7)]
-    cnt_classified[0] = cnt[0]
-    cnt_classified[1] = cnt[1]  + cnt[2]
-    cnt_classified[2] = cnt[3]  + cnt[4]  + cnt[5]
-    cnt_classified[3] = cnt[6]  + cnt[7]  + cnt[8]
-    cnt_classified[4] = cnt[9]  + cnt[10] + cnt[11] + cnt[12]
-    cnt_classified[5] = cnt[13] + cnt[14]
-    cnt_classified[6] = cnt[15]
+    cnt_classified[0] = cnt[0]  + cnt[1]
+    cnt_classified[1] = cnt[2]  + cnt[3]
+    cnt_classified[2] = cnt[4]  + cnt[5]  + cnt[6]  + cnt[7]
+    cnt_classified[3] = cnt[8]  + cnt[9]  + cnt[10] + cnt[11]
+    cnt_classified[4] = cnt[12] + cnt[13] + cnt[14] + cnt[15]
+    cnt_classified[5] = cnt[16] + cnt[17]
+    cnt_classified[6] = cnt[18]
     return cnt_classified
     
 # sample frame(for test)
@@ -221,19 +221,19 @@ def loadFrame() :
 
 def findCases() :
     global history, frame, solutions
-    for typeNo in range(16) :
+    for typeNo in range(19) :
         if isComplete(frame) :
             solutions.append(copy.deepcopy(history))
             blockSwitch(*history.pop(), frame)
             break
         i, j = findNext(frame)
+        
         if canAdd(typeNo, i, j, frame) :
             blockSwitch(typeNo, i, j, frame)
             history.append((typeNo, i, j))
             findCases()
-        elif typeNo == 15 :
             blockSwitch(*history.pop(), frame)
-
+        
 def main():
     global history, frame, solutions
     initial_frame = loadFrame()
